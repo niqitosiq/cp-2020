@@ -24,7 +24,12 @@ export class UserService {
     );
     return await createUser.save();
   }
-  async find(id: string): Promise<IUser> {
+  async findById(id: string): Promise<IUser> {
     return await this.userModel.findById(id).exec();
   }
+
+  async findByPhone(phone: string): Promise<IUser> {
+    return await this.userModel.findOne({ phone }).exec();
+  }
+
 }

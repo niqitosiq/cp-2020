@@ -9,9 +9,14 @@ export class UserController {
 
     constructor(private readonly userService: UserService) {}
 
-    @Get('/:id')
-    async getUser(@Param('id') id: string): Promise<IUser> {
-        return await this.userService.find(id)
+    @Get('getById/:id')
+    async getUserById(@Param('id') id: string): Promise<IUser> {
+        return await this.userService.findById(id)
+    }
+
+    @Get('getByPhone/:phone')
+    async getUserByPhone(@Param('phone') phone: string): Promise<IUser> {
+        return await this.userService.findByPhone(phone)
     }
     
     @Post('')
