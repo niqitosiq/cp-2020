@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UserModule } from './user/user.module';
 
 const enviroment = process.env.NODE_ENV || 'development';
 
@@ -14,6 +15,7 @@ const enviroment = process.env.NODE_ENV || 'development';
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }),
+    UserModule
   ],
 })
 export class AppModule {}
