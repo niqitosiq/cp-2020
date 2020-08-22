@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import * as Chain from '@christopy/chaindb';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -11,7 +11,7 @@ import { voteDto } from './dto/voteDto.dto';
 @Injectable()
 export class BallotService {
   constructor(
-    @InjectModel('Ballot') private readonly ballotModel: Model<IBallot>,
+    @InjectModel('Ballot') private readonly ballotModel: Model<IBallot>
   ) {}
 
   async create(createBallotDto: CreateBallotDto): Promise<any> {
@@ -35,9 +35,11 @@ export class BallotService {
   }
 
   async vote(currVote: voteDto): Promise<any> {
-    const { total } = JSON.parse(Chain.Last(`${currVote.id}`));
+    const { total } = JSON.parse(Chain.Last(`${currVote.pollId}`));
     const uid = currVote.userId;
-    const voteValue = currVote.voteValue;
+    const userData = await fetch(`http://localhost:3000/user/getById/${currVote.userId}`)
+
+    const voteValue = userData.body['voteValue']
     const vote = currVote.vote;
 
     total[currVote.vote] += voteValue;
@@ -49,7 +51,7 @@ export class BallotService {
       total,
     };
 
-    Chain.Add(currVote.id, voteObject);
+    Chain.Add(currVote.pollId, voteObject);
 
     return await voteObject;
   }

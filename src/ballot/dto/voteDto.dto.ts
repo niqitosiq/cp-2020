@@ -1,6 +1,5 @@
 export class voteDto {
   readonly userId: string;
-  readonly voteValue: number;
-  readonly id: string;
+  readonly pollId: string;
   readonly vote: string;
 }
