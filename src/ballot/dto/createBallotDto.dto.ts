@@ -1,3 +1,3 @@
-export class createBallotDto {
+export class CreateBallotDto {
   readonly candidates: Array<string>;
 }
