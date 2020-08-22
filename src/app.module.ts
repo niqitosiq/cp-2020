@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { BallotModule } from './ballot/ballot.module';
 import { AdminModule } from './admin/admin.module';
+import { DiscussModule } from './discuss/discuss.module';
 
 const enviroment = process.env.NODE_ENV || 'development';
 
@@ -19,7 +20,8 @@ const enviroment = process.env.NODE_ENV || 'development';
     }),
     UserModule,
     BallotModule,
-    AdminModule
+    AdminModule,
+    DiscussModule
   ],
 })
 export class AppModule {}
