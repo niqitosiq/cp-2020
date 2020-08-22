@@ -1,33 +1,46 @@
 import { Injectable } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const Chain = require('@christopy/chaindb');
-
-Chain.New('Chaindb');
+import * as Chain from '@christopy/chaindb';
 
 @Injectable()
 export class BallotService {
-  create(): any {
+  create(candidates: Array<string>): any {
     const id = '123'; // Тут нужно создавать инстанс и вернуть айдишник его
 
+    const total = {};
+    candidates.forEach(candidate => {
+      total[candidate] = 0;
+    });
+
+    Chain.New(`Chaindb-ballot-${id}`);
     Chain.Add(id, 'created');
+    Chain.Add(id, {
+      total,
+      user: 'system-initial-voting',
+    });
 
     return {
       id,
     };
   }
 
-  vote(id: number, user: string, vote: string): any {
+  vote(id: string, user: string, vote: string): any {
+    const { total } = JSON.parse(Chain.Last(id));
+
+    total[vote] += 1; //Тут будет получение веса голоса
+
     const voteObject = {
+      total,
       user,
       vote,
     };
-    console.log(id);
+
     Chain.Add(id, voteObject);
 
     return voteObject;
   }
 
-  getAll(id: number): any {
+  getAll(id: string): any {
     return Chain.All(id);
   }
 }

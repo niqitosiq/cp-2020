@@ -1,4 +1,4 @@
 export class voteDto {
-  readonly id: number;
+  readonly id: string;
   readonly vote: string;
 }
