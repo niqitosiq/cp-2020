@@ -8,12 +8,12 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('getById/:id')
+  @Get('/getById/:id')
   async getUserById(@Param('id') id: string): Promise<IUser> {
     return await this.userService.findById(id);
   }
 
-  @Get('getByPhone/:phone')
+  @Get('/getByPhone/:phone')
   async getUserByPhone(@Param('phone') phone: string): Promise<IUser> {
     return await this.userService.findByPhone(phone);
   }

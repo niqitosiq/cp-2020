@@ -23,6 +23,6 @@ export class UserService {
     return await this.userModel.findById(id).exec();
   }
   async findByPhone(phone: string): Promise<IUser> {
-    return await this.userModel.findById(phone).exec();
+    return await this.userModel.where(`${phone} === this.phone`).exec();
   }
 }
