@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 import * as Chain from '@christopy/chaindb';
 
 @Injectable()
@@ -13,7 +12,6 @@ export class BallotService {
     });
 
     Chain.New(`Chaindb-ballot-${id}`);
-    Chain.Add(id, 'created');
     Chain.Add(id, {
       total,
       user: 'system-initial-voting',
