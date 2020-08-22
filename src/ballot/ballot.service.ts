@@ -1,13 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import * as Chain from '@christopy/chaindb';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+
+import { IVoteBlock } from 'src/ballot/interfaces/voteBlock.interface'
+import { IBallot } from 'src/ballot/interfaces/ballot.interface'
+import { CreateBallotDto } from './dto/createBallotDto.dto';
+import { voteDto } from './dto/voteDto.dto';
 
 @Injectable()
 export class BallotService {
-  create(candidates: Array<string>): any {
-    const id = '123'; // Тут нужно создавать инстанс и вернуть айдишник его
+  constructor(@InjectModel('Ballot') private readonly ballotModel: Model<IBallot>) {}
+
+  async create(createBallotDto: CreateBallotDto): Promise<any> {
+
+    const currentBallot = new this.ballotModel(createBallotDto);
+
+    const id = currentBallot._id; 
 
     const total = {};
-    candidates.forEach(candidate => {
+    
+    currentBallot.candidates.forEach(candidate => {
       total[candidate] = 0;
     });
 
@@ -17,28 +30,32 @@ export class BallotService {
       user: 'system-initial-voting',
     });
 
-    return {
-      id,
-    };
+    return await currentBallot.save()
   }
 
-  vote(id: string, user: string, vote: string): any {
-    const { total } = JSON.parse(Chain.Last(id));
+  async vote(currVote: voteDto): Promise<any> {
+    const { total } = JSON.parse(Chain.Last(currVote.id));
+    
+    const uid = currVote.user["_id"];
+    const voteValue = currVote.user.voteValue;
+    const vote = currVote.vote;
 
-    total[vote] += 1; //Тут будет получение веса голоса
+    total[currVote.vote] += voteValue;
+    
 
-    const voteObject = {
-      total,
-      user,
+    const voteObject: IVoteBlock = {
+      uid,
       vote,
+      voteValue,
+      total,
     };
 
-    Chain.Add(id, voteObject);
+    Chain.Add(currVote.id, voteObject);
 
-    return voteObject;
+    return await voteObject;
   }
 
-  getAll(id: string): any {
-    return Chain.All(id);
+  async getAll(id: string): Promise<any> {
+    return await Chain.All(id);
   }
 }
