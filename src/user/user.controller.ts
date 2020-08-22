@@ -8,6 +8,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Get('')
+  async getUsers(): Promise<IUser> {
+    return await this.userService.all();
+  }
+
   @Get('/getById/:id')
   async getUserById(@Param('id') id: string): Promise<IUser> {
     return await this.userService.findById(id);
@@ -19,10 +24,7 @@ export class UserController {
   }
 
   @Post('')
-  async createUser(
-    @Body() createUserDto: CreateUserDto,
-    roles: Array<string>,
-  ): Promise<IUser> {
-    return await this.userService.create(createUserDto, roles);
+  async createUser(@Body() createUserDto: CreateUserDto): Promise<IUser> {
+    return await this.userService.create(createUserDto);
   }
 }

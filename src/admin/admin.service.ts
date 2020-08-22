@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as parser from 'xml2json';
+import { UserService } from '../user/user.service';
 
 type BufferFile = {
   buffer: Buffer;
@@ -7,6 +8,8 @@ type BufferFile = {
 
 @Injectable()
 export class AdminService {
+  constructor(private userService: UserService) {}
+
   async checkFile(file: BufferFile): Promise<any> {
     const content = Buffer.from(file.buffer).toString('utf8');
     const { KPOKS: json } = JSON.parse(parser.toJson(content));
@@ -17,10 +20,18 @@ export class AdminService {
 
     let owners = [];
     if (Array.isArray(rights)) {
-      owners = rights.map(right => {
+      owners = rights.map(async right => {
         const multiplicator =
           right.Registration.Share.Numerator /
           right.Registration.Share.Denominator;
+
+        await this.userService.create({
+          avatar: '',
+          name: right.Owner.Person.Content,
+          voteValue: area * multiplicator,
+          phone: cadastral,
+        });
+
         return {
           owner: right.Owner.Person.Content,
           total: area * multiplicator,
@@ -32,6 +43,12 @@ export class AdminService {
         owner: rights.Owner.Person.Content,
         total: area,
         multiplicator: 1,
+      });
+      await this.userService.create({
+        avatar: '',
+        name: rights.Owner.Person.Content,
+        voteValue: area,
+        phone: cadastral,
       });
     }
 

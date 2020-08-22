@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { BallotModule } from './ballot/ballot.module';
 import { AdminModule } from './admin/admin.module';
 import { DiscussModule } from './discuss/discuss.module';
+import { UserService } from './user/user.service';
 
 const enviroment = process.env.NODE_ENV || 'development';
 
@@ -21,7 +22,7 @@ const enviroment = process.env.NODE_ENV || 'development';
     UserModule,
     BallotModule,
     AdminModule,
-    DiscussModule
+    DiscussModule,
   ],
 })
 export class AppModule {}

@@ -1,22 +1,8 @@
 import * as mongoose from 'mongoose';
-import { genderEnum } from '../enums/gender.enum';
-import { roleEnum } from '../enums/role.enum';
 
 export const UserSchema = new mongoose.Schema({
-  email: { type: String, unique: true, required: true },
-  avatar: { type: String, default: null },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  gender: { type: String, required: true, enum: Object.values(genderEnum) },
-  address: { type: String },
-  profession: {
-    type: String,
-    default: null,
-  },
-  phone: { type: String, required: true },
-  role: { type: [String], required: true, enum: Object.values(roleEnum) },
-  password: { type: String, required: true },
-  voteValue: {type: Number, required: true }
+  avatar: { type: String, default: null, unique: false },
+  name: { type: String, required: true, unique: false },
+  phone: { type: String, required: true, unique: false },
+  voteValue: { type: Number, required: true, unique: false },
 });
-
-UserSchema.index({ phone: 1 }, { unique: true });

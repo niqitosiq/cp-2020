@@ -10,13 +10,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class UserService {
   constructor(@InjectModel('User') private readonly userModel: Model<IUser>) {}
 
-  async create(
-    createUserDto: CreateUserDto,
-    roles: Array<string>,
-  ): Promise<IUser> {
-    const createUser = new this.userModel(
-      _.assignIn(createUserDto, { password: createUserDto.password, roles }),
-    );
+  async create(createUserDto: CreateUserDto): Promise<IUser> {
+    const createUser = new this.userModel(createUserDto);
     return await createUser.save();
   }
   async findById(id: string): Promise<IUser> {
@@ -24,5 +19,8 @@ export class UserService {
   }
   async findByPhone(phone: string): Promise<IUser> {
     return await this.userModel.where(`${phone} === this.phone`).exec();
+  }
+  async all(): Promise<IUser> {
+    return await this.userModel.where(`this.phone !== 0`).exec();
   }
 }
