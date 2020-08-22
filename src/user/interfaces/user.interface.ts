@@ -11,4 +11,5 @@ export interface IUser extends Document {
   readonly phone: string;
   readonly roles: Array<string>;
   readonly password: string;
+  readonly voteValue: number;
 }
