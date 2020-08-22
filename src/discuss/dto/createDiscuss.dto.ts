@@ -1,4 +1,5 @@
 import { IAuthor } from "../interfaces/author.interface";
+import { IMessage } from '../interfaces/message.interface'
 
 export class CreateDiscussDto {
     readonly title: string;
@@ -8,5 +9,6 @@ export class CreateDiscussDto {
     readonly rating: number;
     readonly checkByAdmin: boolean;
     readonly pollId: string;
+    readonly messages: [IMessage]
     readonly chatId: string;
 }
