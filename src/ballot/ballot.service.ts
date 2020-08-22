@@ -7,11 +7,13 @@ import { IVoteBlock } from 'src/ballot/interfaces/voteBlock.interface';
 import { IBallot } from 'src/ballot/interfaces/ballot.interface';
 import { CreateBallotDto } from './dto/createBallotDto.dto';
 import { voteDto } from './dto/voteDto.dto';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class BallotService {
   constructor(
-    @InjectModel('Ballot') private readonly ballotModel: Model<IBallot>
+    @InjectModel('Ballot') private readonly ballotModel: Model<IBallot>,
+    private userService: UserService,
   ) {}
 
   async create(createBallotDto: CreateBallotDto): Promise<any> {
@@ -37,17 +39,17 @@ export class BallotService {
   async vote(currVote: voteDto): Promise<any> {
     const { total } = JSON.parse(Chain.Last(`${currVote.pollId}`));
     const uid = currVote.userId;
-    const userData = await fetch(`http://localhost:3000/user/getById/${currVote.userId}`)
+    const userData = await this.userService.findById(currVote.userId);
 
-    const voteValue = userData.body['voteValue']
+    const voteValue = userData.voteValue;
     const vote = currVote.vote;
 
     if (total === undefined) {
       Chain.New(`Chaindb-ballot-${currVote.pollId}`);
       Chain.Add(`${currVote.pollId}`, {
-      total,
-      user: 'system-initial-voting',
-    });
+        total,
+        user: 'system-initial-voting',
+      });
     }
 
     total[currVote.vote] += voteValue;
