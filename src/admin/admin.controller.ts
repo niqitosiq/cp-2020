@@ -13,7 +13,8 @@ export class AdminController {
 
   @Post('/xml')
   @UseInterceptors(FileInterceptor('file'))
-  parseXML(@UploadedFile() file: File): Promise<boolean> {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  parseXML(@UploadedFile() file): Promise<boolean> {
     return this.adminService.checkFile(file);
   }
 }
