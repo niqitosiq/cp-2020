@@ -17,15 +17,20 @@ export class AdminService {
 
     let owners = [];
     if (Array.isArray(rights)) {
-      owners = rights.map(right => ({
-        owner: right.Owner.Person.Content,
-        multiplicator:
+      owners = rights.map(right => {
+        const multiplicator =
           right.Registration.Share.Numerator /
-          right.Registration.Share.Denominator,
-      }));
+          right.Registration.Share.Denominator;
+        return {
+          owner: right.Owner.Person.Content,
+          total: area * multiplicator,
+          multiplicator,
+        };
+      });
     } else {
       owners.push({
         owner: rights.Owner.Person.Content,
+        total: area,
         multiplicator: 1,
       });
     }
