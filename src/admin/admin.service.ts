@@ -18,9 +18,9 @@ export class AdminService {
     const rights =
       json.ReestrExtract.ExtractObjectRight.ExtractObject.ObjectRight.Right;
 
-    let owners = [];
+    const owners = [];
     if (Array.isArray(rights)) {
-      owners = rights.map(async right => {
+      for (const right of rights) {
         const multiplicator =
           right.Registration.Share.Numerator /
           right.Registration.Share.Denominator;
@@ -32,12 +32,12 @@ export class AdminService {
           phone: cadastral,
         });
 
-        return {
+        owners.push({
           owner: right.Owner.Person.Content,
           total: area * multiplicator,
           multiplicator,
-        };
-      });
+        });
+      }
     } else {
       owners.push({
         owner: rights.Owner.Person.Content,
