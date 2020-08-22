@@ -35,14 +35,14 @@ export class BallotService {
   }
 
   async vote(currVote: voteDto): Promise<any> {
-    const { total } = JSON.parse(Chain.Last(`${currVote.pollId}`)) || null;
+    const { total } = JSON.parse(Chain.Last(`${currVote.pollId}`));
     const uid = currVote.userId;
     const userData = await fetch(`http://localhost:3000/user/getById/${currVote.userId}`)
 
     const voteValue = userData.body['voteValue']
     const vote = currVote.vote;
 
-    if (total === null) {
+    if (total === undefined) {
       Chain.New(`Chaindb-ballot-${currVote.pollId}`);
       Chain.Add(`${currVote.pollId}`, {
       total,
