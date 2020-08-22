@@ -35,9 +35,8 @@ export class BallotService {
   }
 
   async vote(currVote: voteDto): Promise<any> {
-    console.log(currVote);
     const { total } = JSON.parse(Chain.Last(`${currVote.id}`));
-    console.log(total);
+
     const uid = currVote.user['_id'];
     const voteValue = currVote.user.voteValue;
     const vote = currVote.vote;
@@ -58,5 +57,9 @@ export class BallotService {
 
   async getAll(id: string): Promise<any> {
     return await Chain.All(id);
+  }
+
+  async getLast(id: string): Promise<any> {
+    return await Chain.Last(id);
   }
 }
