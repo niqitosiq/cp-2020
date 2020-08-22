@@ -10,5 +10,4 @@ export class CreateDiscussDto {
     readonly checkByAdmin: boolean;
     readonly pollId: string;
     readonly messages: [IMessage]
-    readonly chatId: string;
 }

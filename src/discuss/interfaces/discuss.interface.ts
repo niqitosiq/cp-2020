@@ -10,7 +10,6 @@ export interface IDiscuss extends Document {
     readonly rating: number;
     readonly checkByAdmin: boolean;
     readonly pollId?: string;
-    readonly chatId: string;
     readonly messages: [IMessage]
     readonly created_at: Date;
 

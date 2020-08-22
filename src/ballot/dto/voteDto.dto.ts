@@ -1,7 +1,6 @@
-import { IUser } from 'src/user/interfaces/user.interface'
-
 export class voteDto {
-  readonly user: IUser;
+  readonly userId: string;
+  readonly voteValue: number;
   readonly id: string;
   readonly vote: string;
 }

@@ -38,8 +38,8 @@ export class BallotService {
     console.log(currVote);
     const { total } = JSON.parse(Chain.Last(`${currVote.id}`));
     console.log(total);
-    const uid = currVote.user['_id'];
-    const voteValue = currVote.user.voteValue;
+    const uid = currVote.userId;
+    const voteValue = currVote.voteValue;
     const vote = currVote.vote;
 
     total[currVote.vote] += voteValue;
