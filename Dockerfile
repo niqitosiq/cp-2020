@@ -1,5 +1,7 @@
 FROM node:12.13-alpine As development
 
+RUN apk add g++ make python
+
 WORKDIR /usr/src/app
 
 COPY package*.json ./
@@ -11,6 +13,8 @@ COPY . .
 RUN npm run build
 
 FROM node:12.13-alpine as production
+
+RUN apk add g++ make python
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
