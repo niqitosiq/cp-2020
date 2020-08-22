@@ -36,15 +36,8 @@ export class BallotService {
 
   async vote(currVote: voteDto): Promise<any> {
     const { total } = JSON.parse(Chain.Last(`${currVote.id}`));
-<<<<<<< HEAD
-    console.log(total);
     const uid = currVote.userId;
     const voteValue = currVote.voteValue;
-=======
-
-    const uid = currVote.user['_id'];
-    const voteValue = currVote.user.voteValue;
->>>>>>> de9efaf4ca7a6310db346bf39c4a31c8b806c2b9
     const vote = currVote.vote;
 
     total[currVote.vote] += voteValue;
