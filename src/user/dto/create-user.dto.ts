@@ -9,4 +9,5 @@ export class CreateUserDto {
   readonly phone: string;
   readonly roles: Array<string>;
   readonly password: string;
+  readonly voteValue: number;
 }

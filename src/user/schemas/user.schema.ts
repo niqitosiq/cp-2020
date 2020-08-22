@@ -16,6 +16,7 @@ export const UserSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   role: { type: [String], required: true, enum: Object.values(roleEnum) },
   password: { type: String, required: true },
+  voteValue: {type: Number, required: true }
 });
 
 UserSchema.index({ phone: 1 }, { unique: true });
