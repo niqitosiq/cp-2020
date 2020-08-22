@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as Chain from '@christopy/chaindb';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
