@@ -5,7 +5,6 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { IVoteBlock } from 'src/ballot/interfaces/voteBlock.interface';
 import { IBallot } from 'src/ballot/interfaces/ballot.interface';
-import { CreateBallotDto } from './dto/createBallotDto.dto';
 import { voteDto } from './dto/voteDto.dto';
 import { UserService } from 'src/user/user.service';
 
@@ -16,41 +15,35 @@ export class BallotService {
     private userService: UserService,
   ) {}
 
-  async create(createBallotDto: CreateBallotDto): Promise<any> {
-    const currentBallot = new this.ballotModel(createBallotDto);
-
-    const id = currentBallot._id;
-
-    const total = {};
-
-    currentBallot.candidates.forEach(candidate => {
-      total[candidate] = 0;
-    });
+  initChain(id: string): void {
+    const total = { X: 0, Y: 0, N: 0 };
 
     Chain.New(`Chaindb-ballot-${id}`);
     Chain.Add(`${id}`, {
       total,
       user: 'system-initial-voting',
     });
+  }
+
+  async create(): Promise<any> {
+    const currentBallot = new this.ballotModel();
+
+    const id = currentBallot._id;
+
+    this.initChain(id);
 
     return await currentBallot.save();
   }
 
   async vote(currVote: voteDto): Promise<any> {
-    const { total } = JSON.parse(Chain.Last(`${currVote.pollId}`));
+    const { total } = JSON.parse(Chain.Last(`${currVote.pollId}`)) || {
+      total: { X: 0, Y: 0, N: 0 },
+    };
     const uid = currVote.userId;
     const userData = await this.userService.findById(currVote.userId);
 
     const voteValue = userData.voteValue;
     const vote = currVote.vote;
-
-    if (total === undefined) {
-      Chain.New(`Chaindb-ballot-${currVote.pollId}`);
-      Chain.Add(`${currVote.pollId}`, {
-        total,
-        user: 'system-initial-voting',
-      });
-    }
 
     total[currVote.vote] += voteValue;
 
@@ -67,10 +60,10 @@ export class BallotService {
   }
 
   async getAll(id: string): Promise<any> {
-    return await Chain.All(id);
+    return Chain.All(id);
   }
 
   async getLast(id: string): Promise<any> {
-    return await Chain.Last(id);
+    return Chain.Last(id);
   }
 }

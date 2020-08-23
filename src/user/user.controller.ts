@@ -13,6 +13,11 @@ export class UserController {
     return await this.userService.all();
   }
 
+  @Get('/totalArea')
+  async getTotalArea(): Promise<number> {
+    return await this.userService.getTotalArea();
+  }
+
   @Get('/getById/:id')
   async getUserById(@Param('id') id: string): Promise<IUser> {
     return await this.userService.findById(id);

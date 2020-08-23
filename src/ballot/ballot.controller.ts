@@ -8,8 +8,8 @@ export class BallotController {
   constructor(private readonly ballotService: BallotService) {}
 
   @Post('/create')
-  createBallot(@Body() body: CreateBallotDto): Promise<any> {
-    return this.ballotService.create(body);
+  createBallot(): Promise<any> {
+    return this.ballotService.create();
   }
 
   @Post('/vote')

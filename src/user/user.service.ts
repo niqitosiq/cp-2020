@@ -23,4 +23,12 @@ export class UserService {
   async all(): Promise<IUser> {
     return await this.userModel.where(`this.phone !== 0`).exec();
   }
+  async getTotalArea(): Promise<number> {
+    const users = await this.all();
+    let total = 0;
+    users.forEach(user => {
+      total += user.voteValue;
+    });
+    return total;
+  }
 }

@@ -14,9 +14,7 @@ export class DiscussService {
   ) {}
 
   async createDiscuss(createDiscussDto: CreateDiscussDto): Promise<IDiscuss> {
-    const poll = await this.ballotService.create({
-      candidates: ['Y', 'N', 'X'],
-    });
+    const poll = await this.ballotService.create();
     createDiscussDto.pollId = poll.id;
     const createDiscuss = new this.discussModel(createDiscussDto);
     return await createDiscuss.save();
